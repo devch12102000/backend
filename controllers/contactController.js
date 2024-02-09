@@ -4,9 +4,10 @@ const ContactModel = require("../models/contactModel");
 //@route GET /api/contacts
 //@access private
 const getAllContacts = asyncHandler(async (req, res) => {
-  const allContacts = await ContactModel.find({ user_id: req.user.id }).skip(req.query.offset).limit(req.query.pageSize);
+  const contacts = await ContactModel.find({ user_id: req.user.id }).skip((req.query.pageNo-1)*req.query.pageSize).limit(req.query.pageSize);
+  const allContacts = await ContactModel.find({ user_id: req.user.id })
   const response = {
-    data: allContacts,
+    data: contacts,
     total: allContacts.length
   }
   res.status(200).json(response);
